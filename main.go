@@ -47,7 +47,9 @@ func main() {
 		fmt.Printf("Could not parse rate limit from response.\n")
 	}
 
-	currentTimeline := timeline.RetrieveUserTimeline("FLoloz", client)
+	screenName := "USER STRING"
+
+	currentTimeline := timeline.RetrieveUserTimeline(screenName, client)
 
 	for _, tweet := range *currentTimeline {
 		fmt.Printf("%+v\n", tweet.Text())
