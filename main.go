@@ -1,27 +1,14 @@
-/* Authenticates the twitter login and oauth */
-
 package main
 
 import (
+	"TwitterTopicAnalysis/credentials"
+	"TwitterTopicAnalysis/timeline"
 	"fmt"
 	"net/http"
 	"os"
 
-	"github.com/kurrik/oauth1a"
 	"github.com/kurrik/twittergo"
 )
-
-//LoadCredentials Loads the credentials for twitter API
-func LoadCredentials() (client *twittergo.Client) {
-	config := &oauth1a.ClientConfig{
-		ConsumerKey:    APIKey,
-		ConsumerSecret: APISecretKey,
-	}
-	user := oauth1a.NewAuthorizedConfig(AccessToken, AccessTokenSecretKey)
-
-	client = twittergo.NewClient(config, user)
-	return
-}
 
 func main() {
 	var (
@@ -32,7 +19,7 @@ func main() {
 		user   *twittergo.User
 	)
 
-	client = LoadCredentials()
+	client = credentials.LoadCredentials()
 
 	req, err = http.NewRequest("GET", "/1.1/account/verify_credentials.json", nil)
 	if err != nil {
@@ -58,5 +45,11 @@ func main() {
 		fmt.Printf("Rate limit reset:     %v\n", resp.RateLimitReset())
 	} else {
 		fmt.Printf("Could not parse rate limit from response.\n")
+	}
+
+	currentTimeline := timeline.RetrieveUserTimeline("FLoloz", client)
+
+	for _, tweet := range *currentTimeline {
+		fmt.Printf("%+v\n", tweet.Text())
 	}
 }
