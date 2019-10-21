@@ -28,12 +28,12 @@ func RetrieveUserTimeline(username string, client *twittergo.Client) *twittergo.
 	endpoint := fmt.Sprintf(urltmpl, query.Encode())
 
 	if req, err = http.NewRequest("GET", endpoint, nil); err != nil {
-		fmt.Printf("Could not parse request: %v\n", err)
+		fmt.Printf("Could not parse request for user timeline: %v\n", err)
 		os.Exit(1)
 	}
 
 	if apiResponse, err = client.SendRequest(req); err != nil {
-		fmt.Printf("Could not send request: %v\n", err)
+		fmt.Printf("Could not send request for user timeline: %v\n", err)
 		os.Exit(1)
 	}
 

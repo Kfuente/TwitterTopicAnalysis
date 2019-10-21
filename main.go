@@ -3,6 +3,7 @@ package main
 import (
 	"TwitterTopicAnalysis/credentials"
 	"TwitterTopicAnalysis/timeline"
+	"TwitterTopicAnalysis/users"
 	"fmt"
 	"net/http"
 	"os"
@@ -47,11 +48,16 @@ func main() {
 		fmt.Printf("Could not parse rate limit from response.\n")
 	}
 
-	screenName := "USER STRING"
-
-	currentTimeline := timeline.RetrieveUserTimeline(screenName, client)
+	currentTimeline := timeline.RetrieveUserTimeline("FLoloz", client)
 
 	for _, tweet := range *currentTimeline {
 		fmt.Printf("%+v\n", tweet.Text())
 	}
+
+	followerScreenNameList := users.RetrieveFollowersForASpecificUser("FLoloz", client)
+
+	for _, followerScreenName := range followerScreenNameList {
+		fmt.Printf("User: %v\n", followerScreenName)
+	}
+
 }
